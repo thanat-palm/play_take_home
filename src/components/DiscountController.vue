@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { CouponCampaign } from '../types/campaign';
+import type { Campaign } from '../types/campaign';
 import EditorDialog from './EditorDialog.vue';
 import NumberInput from './NumberInput.vue';
 
 
-const couponLists:CouponCampaign[] = [
+const couponLists:Campaign[] = [
     {
         title: 'Discount Coupon',
         value: 40,
@@ -46,27 +46,29 @@ const couponLists:CouponCampaign[] = [
                 :key="`coupon-${index}`"
                 class="bg-stone-200 rounded-lg overflow-hidden flex h-[100px]"
             >
-                <div v-if="coupon.type === 'percent'" class="p-4 w-[200px] bg-lime-800 text-stone-200 ">
-                    <p class="text-sm font-light">Discount</p>
-                    <h1 class="font-bold text-4xl">{{ coupon.value }} <span class="text-sm">%</span></h1>
-                </div>
-                <div v-else class="p-4 bg-yellow-800 w-[200px] text-stone-200 ">
-                    <p class="text-sm font-light">Discount</p>
-                    <h1 class="font-bold text-4xl">{{ coupon.value }} <span class="text-sm">฿</span></h1>
-                </div>
-                <div class="flex-1 p-2 flex items-center justify-between">
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam, accusamus.</p>
-                    <div class="flex items-center gap-2">
-                        <p class="text-stone-700/50">{{ coupon.campaignType }} / {{ coupon.type }}</p>
-                        <button class="py-2 px-4 bg-lime-500 shadow-lg rounded-lg text-bg-lime-800 font-semibold transition-all duration-200 active:scale-105 cursor-pointer">Apply</button>
+                <template v-if="coupon.campaignType === 'coupon'">
+                    <div v-if="coupon.type === 'percent'" class="p-4 w-[200px] bg-lime-800 text-stone-200 ">
+                        <p class="text-sm font-light">Discount</p>
+                        <h1 class="font-bold text-4xl">{{ coupon.value }} <span class="text-sm">%</span></h1>
                     </div>
-                </div>
-            </li>
-        </ul>
-        <div class="flex-1 flex">
-            <div class="w-1/4 flex items-center justify-center">
-                <div class="space-y-5">
-                    <div class="flex items-center gap-2">
+                    <div v-else class="p-4 bg-yellow-800 w-[200px] text-stone-200 ">
+                        <p class="text-sm font-light">Discount</p>
+                        <h1 class="font-bold text-4xl">{{ coupon.value }} <span class="text-sm">฿</span></h1>
+                    </div>
+                    <div class="flex-1 p-2 flex items-center justify-between">
+                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam, accusamus.</p>
+                        <div class="flex items-center gap-2">
+                            <p class="text-stone-700/50">{{ coupon.campaignType }} / {{ coupon.type }}</p>
+                            <button class="py-2 px-4 bg-lime-500 shadow-lg rounded-lg text-bg-lime-800 font-semibold transition-all duration-200 active:scale-105 cursor-pointer">Apply</button>
+                        </div>
+                    </div>
+                </template>
+                </li>
+            </ul>
+            <div class="flex-1 flex bg-stone-100 rounded-lg">
+                <div class="w-1/4 flex items-center justify-center">
+                    <div class="space-y-5">
+                        <div class="flex items-center gap-2">
                         <input type="radio" name="on-top" class="size-5">
                         <span>Categories Discount</span>
                     </div>
@@ -76,7 +78,7 @@ const couponLists:CouponCampaign[] = [
                     </div>
                 </div>
             </div>
-            <div class="h-full w-[2px] bg-stone-400 rounded-full mr-5"></div>
+            <div class="h-9/10 w-[2px] bg-stone-400 rounded-full mr-5 my-auto"></div>
             <div class="flex items-center justify-between w-full p-4">
                 <div class="">
                     <h1>Discount by points</h1>

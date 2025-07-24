@@ -1,25 +1,26 @@
 import type { CategoryType } from "../constants/items";
 
-export interface CouponCampaign {
+export interface BaseCampaign {
     title: string;
-    value: number;
+}
+
+export interface CouponCampaign extends BaseCampaign {
     campaignType: 'coupon';
+    value: number;
     type: 'percent' | 'amount';
 }
 
-export interface OnTopCampaign {
-    title: string;
+export interface OnTopCampaign extends BaseCampaign {
     campaignType: 'on-top';
     type: 'categories' | 'points';
     discountCategory?: CategoryType | undefined;
     value: number;
 }
 
-export interface SeasonalCampaign {
-    title: string;
+export interface SeasonalCampaign extends BaseCampaign {
+    campaignType: 'seasonal';
     every: number;
     discount: number;
-    campaignType: 'seasonal';
 }
 
-
+export type Campaign = CouponCampaign | OnTopCampaign | SeasonalCampaign;
