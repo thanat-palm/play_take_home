@@ -1,5 +1,11 @@
 import type { CategoryType } from "../constants/items";
 
+export interface DiscountSetProps {
+    coupon: CouponCampaign[],
+    ontop: OnTopSetting,
+    seasonal: SeasonalSetting,
+}
+
 export interface BaseCampaign {
     title: string;
 }
@@ -17,8 +23,20 @@ export interface OnTopCampaign extends BaseCampaign {
     value: number;
 }
 
+export interface OnTopSetting {
+    status: boolean;
+    category: CategoryType;
+    value: number;
+}
+
 export interface SeasonalCampaign extends BaseCampaign {
     campaignType: 'seasonal';
+    every: number;
+    discount: number;
+}
+
+export interface SeasonalSetting {
+    status: boolean;
     every: number;
     discount: number;
 }

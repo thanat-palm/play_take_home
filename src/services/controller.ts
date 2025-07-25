@@ -19,7 +19,6 @@ export const CouponCalculator = (price:number | null , coupon:CouponCampaign) =>
 
 export const onTopCalculator = (basket:Item[] , onTop:OnTopCampaign , price:number) => {
     if(!basket || !onTop) return null;
-    console.log('1')
     const {type , value , discountCategory} = onTop;
     if(type === 'categories') {
         if(!discountCategory) return null;
@@ -31,7 +30,6 @@ export const onTopCalculator = (basket:Item[] , onTop:OnTopCampaign , price:numb
     const maxDiscount = price*(maxDiscountPercentage/100);
     if(value > maxDiscount) return price - maxDiscount;
     return price - value;
-    
 }
 
 export const seasonalCalculator = (price:number | null ,every:number , discount:number) => {
