@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { itemCatalog } from '../constants/items';
+import type { Item } from '../types/item';
 
-// interface ItemProps {
-//     discountData: any[];
-// }
-// defineProps<ItemProps>();
+const emit = defineEmits<{
+    (e: 'select-item', item:Item):void;
+}>();
+
+const selectItem = (item:Item) => {
+   emit('select-item',item);
+}
 
 </script>
 <template>
@@ -12,11 +16,13 @@ import { itemCatalog } from '../constants/items';
         <ul class="flex items-center justify-around">
             <li 
             v-if="itemCatalog && Array.isArray(itemCatalog)" 
-            v-for="item in itemCatalog" 
-            :key="`item-${item.name}`" 
-            class=" bg-lime-800 w-[200px] overflow-hidden rounded-lg text-stone-200 shadow-lg transition-all duration-200 hover:opacity-80 active:scale-105 cursor-pointer"
+            v-for="item in itemCatalog"
+            :key="`item-${item.name}`"
+            @click="selectItem(item)"
+            class="bg-lime-800 w-[200px] overflow-hidden rounded-lg text-stone-200 shadow-lg transition-all duration-200 hover:opacity-80 active:scale-105 cursor-pointer"
             >
                 <div class="w-full h-[100px] bg-stone-300">
+                    <img :src="item.imagePath" :alt="item.name" class="w-full h-full object-cover">
                 </div>
                 <div class="p-2 flex max-sm:flex-col sm:justify-between">
                     <div class="">
