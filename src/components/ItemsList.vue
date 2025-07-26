@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { itemCatalog } from '../constants/items';
+import { useAppStore } from '../stores/appStore';
 import type { Item } from '../types/item';
 
-const emit = defineEmits<{
-    (e: 'select-item', item:Item):void;
-}>();
-
-const selectItem = (item:Item) => {
-   emit('select-item',item);
+const appStore = useAppStore();
+const handleItemSelected = (item:Item) => {
+  const existingItem = appStore.itemList.find(
+        (selected) => selected.name === item.name
+  );
+  if(existingItem) {
+    if(existingItem.amount) existingItem.amount += 1;
+  } else {
+    appStore.itemList.push({ ...item, amount: 1 });
+  }
+  console.log('สินค้าในตะกร้า',appStore.itemList);
 }
 
 </script>
@@ -18,7 +24,7 @@ const selectItem = (item:Item) => {
                 <li 
                     v-for="item in itemCatalog"
                     :key="`item-${item.name}`"
-                    @click="selectItem(item)"
+                    @click="handleItemSelected(item)"
                     class="bg-stone-800 w-full max-w-[150px] overflow-hidden rounded-lg text-stone-200 shadow-lg transition-all duration-200 hover:opacity-80 active:scale-105 cursor-pointer flex flex-col"
                 >
                     <div class="w-full h-[80px] sm:h-[100px] bg-stone-300">

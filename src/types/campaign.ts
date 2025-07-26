@@ -42,3 +42,11 @@ export interface SeasonalSetting {
 }
 
 export type Campaign = CouponCampaign | OnTopCampaign | SeasonalCampaign;
+
+export interface DiscountResult {
+    coupon: number | null;
+    onTop: number | null;
+    seasonal: number | null;
+    summaryPrice: number | null;
+    totalResult: number | null;
+}

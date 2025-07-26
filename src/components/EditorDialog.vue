@@ -26,7 +26,6 @@ const handleEmitDiscountSet = () => {
         seasonal: seasonalForm.value,
     });
     couponForm.value = {...defaultCouponForm};
-    couponList.value = [];
     isOpen.value = false;
     alert('เพิ่มข้อมูลสำเร็จ');
 }
@@ -178,14 +177,3 @@ const removeCoupon = (coupon:CouponCampaign) => {
         </dialog>
     </Transition>
 </template>
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

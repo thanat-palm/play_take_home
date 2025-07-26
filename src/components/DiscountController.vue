@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { Campaign, CouponCampaign, DiscountSetProps } from '../types/campaign';
+import type { CouponCampaign, DiscountSetProps } from '../types/campaign';
 import EditorDialog from './EditorDialog.vue';
 import NumberInput from './NumberInput.vue';
 import { defaultOnTopDiscountForm } from '../constants/optop';
 import { defaultSeasonalDiscountForm } from '../constants/seasonal';
+import { useAppStore } from '../stores/appStore';
 
+const appStore = useAppStore();
 const couponLists = ref<CouponCampaign[]>([]);
 
-const emit = defineEmits<{
-    (e:'select-discount', discountList: Campaign[]): void
-}>()
-
-const discount = ref<Campaign[]>([]);
 const couponDiscountForm = ref<CouponCampaign>();
 const onTopDiscountForm = ref({...defaultOnTopDiscountForm});
 const seasonalDiscountForm = ref({...defaultSeasonalDiscountForm});
@@ -36,11 +33,11 @@ const handleGetDiscountSet = (discountData:DiscountSetProps) => {
 }
 
 const handleDiscount = () => {
-    discount.value = [];
+    appStore.discount = [];
     if(couponDiscountForm.value) {
-        const discountFiltered = discount.value.filter(d => d.campaignType !== couponDiscountForm.value?.campaignType)
-        if(discountFiltered.length !== discount.value.length) discount.value = discountFiltered;
-        discount.value.push(couponDiscountForm.value);
+        const discountFiltered = appStore.discount.filter(d => d.campaignType !== couponDiscountForm.value?.campaignType)
+        if(discountFiltered.length !== appStore.discount.length) appStore.discount = discountFiltered;
+        appStore.discount.push(couponDiscountForm.value);
     }
 
     if(isOnTopActive.value) {
@@ -55,46 +52,41 @@ const handleDiscount = () => {
                 break;
             }
         }
-        const discountFiltered = discount.value.filter(d => d.campaignType !== onTopDiscountForm.value.campaignType)
-        if(discountFiltered.length !== discount.value.length) discount.value = discountFiltered;
-        discount.value.push(onTopDiscountForm.value);
+        const discountFiltered = appStore.discount.filter(d => d.campaignType !== onTopDiscountForm.value.campaignType)
+        if(discountFiltered.length !== appStore.discount.length) appStore.discount = discountFiltered;
+        appStore.discount.push(onTopDiscountForm.value);
     }
     
     if(isSeasonalActive.value) {
-        const discountFiltered = discount.value.filter(d => d.campaignType !== seasonalDiscountForm.value.campaignType)
-        if(discountFiltered.length !== discount.value.length) discount.value = discountFiltered;
-        discount.value.push(seasonalDiscountForm.value);
+        const discountFiltered = appStore.discount.filter(d => d.campaignType !== seasonalDiscountForm.value.campaignType)
+        if(discountFiltered.length !== appStore.discount.length) appStore.discount = discountFiltered;
+        appStore.discount.push(seasonalDiscountForm.value);
     }
     
-    console.log(discount.value);
-}
-
-const handleEmit = () => {
-    handleDiscount();
-    emit('select-discount',discount.value);
+    console.log(appStore.discount);
 }
 
 const handlePickUpCoupon = (coupon:CouponCampaign) => {
   couponDiscountForm.value = coupon;
-  handleEmit();
+  handleDiscount();
 }
 
 watch(()=> couponLists.value , () => {
   couponDiscountForm.value = undefined;
-  handleEmit();
+  handleDiscount();
 },{deep:true});
 
 watch(()=> onTopDiscountForm.value , () => {
-  handleEmit();
+  handleDiscount();
 },{deep:true});
 
 watch(()=> seasonalDiscountForm.value , () => {
-  handleEmit();
+  handleDiscount();
 },{deep:true});
 
 watch(() => isPointsDiscount.value , () => {
   onTopDiscountForm.value.value = categoriesValue.value;
-  handleEmit();
+  handleDiscount();
 },{deep:true});
 
 </script>
@@ -154,7 +146,7 @@ watch(() => isPointsDiscount.value , () => {
                     <h1 class="text-base sm:text-lg">Discount by points {{ pointValue }}</h1>
                     <span class="flex gap-2 items-center mt-2">
                         <NumberInput class="bg-stone-200 max-sm:w-[100px] w-[120px] text-sm sm:text-base" :disabled="!isPointsDiscount" v-model="pointValue"/>
-                        <button @click="handleEmit" class="uppercase px-3 py-1 sm:px-4 sm:py-2 font-semibold bg-stone-700 text-stone-200 rounded-lg transition-all hover:opacity-80 active:scale-105 shadow-lg cursor-pointer text-sm">enter</button>
+                        <button @click="handleDiscount" class="uppercase px-3 py-1 sm:px-4 sm:py-2 font-semibold bg-stone-700 text-stone-200 rounded-lg transition-all hover:opacity-80 active:scale-105 shadow-lg cursor-pointer text-sm">enter</button>
                     </span>
                 </div>
                 <EditorDialog @discount-data="handleGetDiscountSet"/>

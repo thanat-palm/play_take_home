@@ -1,17 +1,3 @@
-<template>
-  <div class="relative flex items-center input input-bordered w-full rounded-lg">
-    <input
-      type="text"
-      :value="formattedValue"
-      @input="onInput"
-      @blur="onBlur"
-      @keydown="onKeydown"
-      class="flex-grow bg-transparent outline-none border-none p-2"
-      :disabled="disabled"
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 
@@ -91,3 +77,18 @@ const onBlur = () => {
   }
 };
 </script>
+
+<template>
+  <div class="relative flex items-center input input-bordered w-full rounded-lg">
+    <input
+      type="text"
+      :value="formattedValue"
+      @input="onInput"
+      @blur="onBlur"
+      @keydown="onKeydown"
+      class="flex-grow bg-transparent outline-none border-none p-2"
+      :disabled="disabled"
+    />
+  </div>
+</template>
+
