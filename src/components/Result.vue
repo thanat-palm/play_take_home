@@ -98,9 +98,9 @@ watch( () => appStore.discount , () => {
                         v-for="list in appStore.itemList" :key="`list-${list.name}`"
                         class="grid grid-cols-5"
                         >
-                        <div class="flex items-center gap-2">
-                            <button class="flex items-center justify-center size-6 bg-stone-700 rounded-lg text-stone-200" @click="handleItemDecreased(list)"><IconMinus size="16"/></button>
+                        <div class="flex items-center gap-1 mr-1">
                             <button class="flex items-center justify-center size-6 bg-red-700 rounded-lg text-red-200" @click="handleItemRemoved(list)"><IconTrash size="16"/></button>
+                            <button class="flex items-center justify-center size-6 bg-stone-700 rounded-lg text-stone-200" @click="handleItemDecreased(list)"><IconMinus size="16"/></button>
                         </div>
                             <div class="col-span-3 flex items-center gap-2"><span class="size-5 flex items-center justify-center bg-stone-500 rounded-full text-xs font-semibold text-stone-200">{{ list.amount }}</span>{{ list.name }}</div>
                             <div v-if="list.amount" class="my-auto">{{ list.price*list?.amount }} ฿</div>
