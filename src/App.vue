@@ -5,6 +5,7 @@ import ItemsList from './components/ItemsList.vue';
 import Result from './components/Result.vue';
 import type { Item } from './types/item';
 import type { Campaign } from './types/campaign';
+import FloatingMenu from './components/FloatingMenu.vue';
 
 const selectedList = ref<Item[]>([]);
 const selectedDiscount = ref<Campaign[]>([]);
@@ -22,16 +23,17 @@ const handleItemSelected = (item:Item) => {
 }
 
 const handleDiscountSelected = (discountList: Campaign[]) => {
-
+  selectedDiscount.value = discountList;
 }
 
 </script>
 
 <template>
   <div class="flex h-screen p-5 space-x-5 relative">
-    <Result :list="selectedList" :discountlist="selectedDiscount"/>
+    <FloatingMenu class="lg:hidden"/>
+    <Result :list="selectedList" :discountlist="selectedDiscount" class="max-lg:hidden"/>
     <div class="flex flex-col flex-1 space-y-5">
-      <ItemsList @select-item="handleItemSelected"/>
+      <ItemsList @select-item="handleItemSelected" class="max-lg:hidden"/>
       <div class="flex-1">
         <DiscountController @select-discount="handleDiscountSelected"/>
       </div>

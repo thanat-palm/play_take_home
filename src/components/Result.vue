@@ -27,34 +27,11 @@ const discountResult = ref<DiscountResult>({
     totalResult: 0,
 })
 
-
-const discountlist:Campaign[] = [
-    {
-        title: 'โปร-เฉือน-โปร',
-        campaignType: 'coupon',
-        type: 'amount',
-        value: 30,
-    },
-    {
-        title: 'ลดแรง',
-        campaignType: 'on-top',
-        type: 'categories',
-        discountCategory: 'electronics',
-        value: 15,
-    },
-    {
-        title: 'โปร 8.8',
-        campaignType: 'seasonal',
-        every: 800,
-        discount: 80
-    }
-]
-
 const updateResult = () => {
     if(!props.list || !Array.isArray(props.list)) return console.log('error' , props.list);
     let currentTotal:number | null = Sum(props.list);
     discountResult.value.summaryPrice = currentTotal;
-    for (const discount of discountlist) {
+    for (const discount of props.discountlist) {
         if (discount.campaignType === 'coupon') {
             const beforecalculate = currentTotal;
             currentTotal = CouponCalculator(currentTotal, discount as CouponCampaign) || 0;
@@ -76,6 +53,11 @@ const updateResult = () => {
 watch(props.list , () => {
     updateResult();
 }, { immediate: true })
+
+watch( () => props.discountlist , () => {
+    console.log('cal2');
+    updateResult();
+}, { deep: true })
 
 </script>
 <template>
@@ -113,15 +95,15 @@ watch(props.list , () => {
                     <div class=" font-semibold"></div>
                 </div>
                 <ul class="w-full h-[200px] overflow-y-auto space-y-1">
-                    <template v-if="discountlist && Array.isArray(discountlist)">
-                        <li v-for="list in discountlist" :key="`list-${list.title}`" class="grid grid-cols-5">
+                    <template v-if="props.discountlist && Array.isArray(props.discountlist)">
+                        <li v-for="list in props.discountlist" :key="`list-${list.title}`" class="grid grid-cols-5">
                             <template v-if="list.campaignType === 'coupon'">
                                 <div class="col-span-4">{{ list.title }} ลด {{ list.value }} {{ list.type === 'percent' ? '%' : 'บาท' }} </div>
                                 <div class="text-red-500">- {{ discountResult.coupon }} ฿</div>
                             </template>
                             <template v-else-if="list.campaignType === 'on-top'">
                                 <div v-if="list.type === 'categories'" class="col-span-4">{{ list.title }} ลด {{ list.value }} % เมื่อซื้อสินค้าประเภท {{ list.discountCategory }}</div>
-                                <div v-else class="col-span-4">{{ list.title }} ลด {{ list.value }} บาท</div>
+                                <div v-else class="col-span-4">{{ list.title }} ลดด้วยพ้อยต์ {{ list.value }} บาท</div>
                                 <div class="text-red-500">- {{ discountResult.onTop }} ฿</div>
                             </template>
                             <template v-else-if="list.campaignType === 'seasonal'">
@@ -130,6 +112,10 @@ watch(props.list , () => {
                             </template>
                         </li>
                     </template>
+                    <div class="grid grid-cols-5 mb-2">
+                        <div class="font-semibold col-span-4">Total Order Summary</div>
+                        <div class="">{{ discountResult.totalResult }} ฿</div>
+                    </div>
                 </ul>
             </div>
         </div>
