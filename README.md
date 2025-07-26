@@ -64,3 +64,5 @@ This module supports the following discount campaign types, categorized and appl
 ### **Author**
 
     Thanat Roongjakrwal
+    
+    workflow and wireframe: https://excalidraw.com/#json=1pBULMMoEfJ8lLgXV0Ccx,vJfckzS9ECrPGtfd8DVQWQ
